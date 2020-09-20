@@ -8,7 +8,6 @@ const CLOUD_COLOR = '#fff';
 const SHADOW_OFFSET = 10;
 const SHADOW_RGBA = 'rgba(0, 0, 0,0.7)';
 const GAP = 50;
-const FONT_GAP = 50;
 const FONT_WIDTH = 40;
 const BAR_WIDTH = 40;
 const BAR_HEIGHT = 150;
@@ -41,32 +40,32 @@ const getMaxElement = (arr) => arr.length > 0 ? arr.sort()[arr.length - 1] : [4,
 
 window.renderStatistics = (ctx, players, times) => {
   drawCloud(
-    ctx,
-    CLOUD_X + SHADOW_OFFSET,
-    CLOUD_Y + SHADOW_OFFSET,
-    SHADOW_RGBA
+      ctx,
+      CLOUD_X + SHADOW_OFFSET,
+      CLOUD_Y + SHADOW_OFFSET,
+      SHADOW_RGBA
   );
   drawCloud(
-    ctx,
-    CLOUD_X,
-    CLOUD_Y,
-    CLOUD_COLOR
+      ctx,
+      CLOUD_X,
+      CLOUD_Y,
+      CLOUD_COLOR
   );
 
   writeTitle(
-    ctx,
-    TITLE_COLOR,
-    TITLE_FONT,
-    'Ура вы победили!',
-    'Список результатов: '
+      ctx,
+      TITLE_COLOR,
+      TITLE_FONT,
+      'Ура вы победили!',
+      'Список результатов: '
   );
 
   let maxTime = getMaxElement(times);
 
   writeScore(
-    ctx,
-    times,
-    TITLE_COLOR
+      ctx,
+      times,
+      TITLE_COLOR
   );
 
   let getBarColor = (player) => player === 'Вы' ? MAIN_BAR_COLOR : 'hsl(240, ' + getRandomSaturate() + ', 50%)';
@@ -75,16 +74,16 @@ window.renderStatistics = (ctx, players, times) => {
   for (let i = 0; i < players.length; i++) {
     ctx.fillStyle = TITLE_COLOR;
     ctx.fillText(
-      players[i],
-      CLOUD_X + GAP + (GAP + FONT_WIDTH) * i,
-      CLOUD_HEIGHT - CLOUD_Y
+        players[i],
+        CLOUD_X + GAP + (GAP + FONT_WIDTH) * i,
+        CLOUD_HEIGHT - CLOUD_Y
     );
     ctx.fillStyle = getBarColor(players[i]);
     ctx.fillRect(
-      CLOUD_X + GAP + (GAP + BAR_WIDTH) * i,
-      CLOUD_Y + TITLE_Y_GAP + GAP + BAR_HEIGHT,
-      BAR_WIDTH,
-      (BAR_HEIGHT * times[i]) * -1 / maxTime
+        CLOUD_X + GAP + (GAP + BAR_WIDTH) * i,
+        CLOUD_Y + TITLE_Y_GAP + GAP + BAR_HEIGHT,
+        BAR_WIDTH,
+        (BAR_HEIGHT * times[i]) * -1 / maxTime
     );
   }
 };
