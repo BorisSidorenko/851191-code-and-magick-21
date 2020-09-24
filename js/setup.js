@@ -13,11 +13,8 @@ const userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
 const setupSimilarList = document.querySelector('.setup-similar-list');
 const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
-const wizardItemTemplate = similarWizardTemplate.querySelector('.setup-similar-item');
-const wizardNameTemplate = wizardItemTemplate.querySelector('.setup-similar-label');
 
-
-const getRandomArrValue = (arr) => arr[Math.floor(Math.random()*arr.length)];
+const getRandomArrValue = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const getWizard = () => {
   const wizard = {
