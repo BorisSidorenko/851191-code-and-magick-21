@@ -10,9 +10,12 @@ const options = {
 };
 
 const userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
 const setupSimilarList = document.querySelector('.setup-similar-list');
 const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
+
+const showUserDialog = () => userDialog.classList.remove('hidden');
+
+const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
 const getRandomArrValue = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -36,6 +39,18 @@ const getWizards = (wizardsCount) => {
   return wizards;
 };
 
+const createWizardsFragment = () => {
+  const fragment = document.createDocumentFragment();
+
+  getWizards(WIZARD_COUNT).forEach((wizard) => {
+    fragment.appendChild(renderWizard(wizard));
+  });
+
+  return fragment;
+};
+
+const addFragmentToHTML = (fragment) => setupSimilarList.appendChild(fragment);
+
 const renderWizard = (wizard) => {
   const wizardElement = similarWizardTemplate.cloneNode(true);
 
@@ -46,10 +61,8 @@ const renderWizard = (wizard) => {
   return wizardElement;
 };
 
-const fragment = document.createDocumentFragment();
-getWizards(WIZARD_COUNT).forEach((wizard) => {
-  fragment.appendChild(renderWizard(wizard));
-});
-setupSimilarList.appendChild(fragment);
+showUserDialog();
 
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+addFragmentToHTML(createWizardsFragment());
+
+showCharacters();
