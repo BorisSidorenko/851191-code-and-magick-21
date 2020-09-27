@@ -51,8 +51,6 @@ const renderWizard = (wizard) => {
 
 showUserDialog();
 
-console.log();
-
 setupSimilarList.appendChild(createWizardsFragment());
 
 showCharacters();
