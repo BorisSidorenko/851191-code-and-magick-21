@@ -25,25 +25,19 @@ const getWizard = () => ({
   eyesColor: options.eyesColors[getRandomArrValue(options.eyesColors.length)]
 });
 
-const getWizards = (wizardsCount) => {
-  const wizards = [];
-
-  for (let i = 0; i < wizardsCount; i++) {
-    wizards.push(getWizard());
-  }
-
-  return wizards;
-};
+const getWizards = (wizardsCount) => new Array(wizardsCount).fill(undefined).map(getWizard);
 
 const createWizardsFragment = () => {
   const fragment = document.createDocumentFragment();
 
-  getWizards(WIZARD_COUNT).forEach((wizard) => {
-    fragment.appendChild(renderWizard(wizard));
-  });
+  getWizards(WIZARD_COUNT).forEach(addWizardToFragment(fragment));
 
   return fragment;
 };
+
+
+const addWizardToFragment = (fragment) => (wizard) => fragment.appendChild(renderWizard(wizard));
+
 
 const renderWizard = (wizard) => {
   const wizardElement = similarWizardTemplate.cloneNode(true);
@@ -56,6 +50,8 @@ const renderWizard = (wizard) => {
 };
 
 showUserDialog();
+
+console.log();
 
 setupSimilarList.appendChild(createWizardsFragment());
 
