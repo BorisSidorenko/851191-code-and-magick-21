@@ -17,17 +17,13 @@ const showUserDialog = () => userDialog.classList.remove('hidden');
 
 const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
-const getRandomArrValue = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const getRandomArrValue = (arrLength) => Math.floor(Math.random() * arrLength);
 
-const getWizard = () => {
-  const wizard = {
-    name: getRandomArrValue(options.firstNames) + ' ' + getRandomArrValue(options.lastNames),
-    coatColor: getRandomArrValue(options.coatColors),
-    eyesColor: getRandomArrValue(options.eyesColors)
-  };
-
-  return wizard;
-};
+const getWizard = () => ({
+  name: options.firstNames[getRandomArrValue(options.firstNames.length)] + ' ' + options.lastNames[getRandomArrValue(options.lastNames.length)],
+  coatColor: options.coatColors[getRandomArrValue(options.coatColors.length)],
+  eyesColor: options.eyesColors[getRandomArrValue(options.eyesColors.length)]
+});
 
 const getWizards = (wizardsCount) => {
   const wizards = [];
@@ -49,8 +45,6 @@ const createWizardsFragment = () => {
   return fragment;
 };
 
-const addFragmentToHTML = (fragment) => setupSimilarList.appendChild(fragment);
-
 const renderWizard = (wizard) => {
   const wizardElement = similarWizardTemplate.cloneNode(true);
 
@@ -63,6 +57,6 @@ const renderWizard = (wizard) => {
 
 showUserDialog();
 
-addFragmentToHTML(createWizardsFragment());
+setupSimilarList.appendChild(createWizardsFragment());
 
 showCharacters();
