@@ -50,18 +50,21 @@ const drawCloud = (ctx) => {
       Shadow.Y_OFFSET,
       Shadow.COLOR
   );
+
   renderCloud(
       ctx,
       Cloud.X,
       Cloud.Y,
       Cloud.COLOR
   );
+
   const options = {
     color: Title.COLOR,
     font: Title.FONT,
     firstLine: Title.FIRST_LINE,
     secondLine: Title.SECOND_LINE
   };
+
   writeTitle(
       ctx,
       options
@@ -89,6 +92,7 @@ const writeScore = (ctx, times, color) => {
 
 const writeNameAndBar = (ctx, players, times) => {
   const maxTime = getMaxElement(times);
+
   players.forEach((player, index) => {
     ctx.fillStyle = Title.COLOR;
     ctx.fillText(
@@ -96,6 +100,7 @@ const writeNameAndBar = (ctx, players, times) => {
         STATISTICS_GAP + FONT_GAP * index,
         Cloud.X_NAME
     );
+
     ctx.fillStyle = getBarColor(player);
     ctx.fillRect(
         STATISTICS_GAP + Bar.X * index,
@@ -112,6 +117,7 @@ const drawStatistics = (ctx, players, times) => {
       times,
       Title.COLOR
   );
+
   writeNameAndBar(
       ctx,
       players,
@@ -123,8 +129,14 @@ const getMaxElement = (arr) => {
   const [first, second, third, fourth] = arr.length > 0 ? arr : [1, 2, 3, 4];
   return Math.max(first, second, third, fourth);
 };
-const getBarColor = (player) => player === PLAYER_NAME ? Bar.COLOR : getRandomBarColor();
-const getRandomBarColor = () => 'hsl(240, ' + Math.floor(Math.random() * MAX_SATURATE_PERCENTAGE) + '%' + ', 50%)';
+
+const getBarColor = (player) => {
+  return player === PLAYER_NAME ? Bar.COLOR : getRandomBarColor();
+};
+
+const getRandomBarColor = () => {
+  return 'hsl(240, ' + Math.floor(Math.random() * MAX_SATURATE_PERCENTAGE) + '%' + ', 50%)';
+};
 
 window.renderStatistics = (ctx, players, times) => {
   drawCloud(ctx);
