@@ -12,8 +12,9 @@ const options = {
 const userDialog = document.querySelector('.setup');
 const setupSimilarList = document.querySelector('.setup-similar-list');
 const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
-
-const showUserDialog = () => userDialog.classList.remove('hidden');
+const setupOpen = document.querySelector('.setup-open');
+const setupClose = document.querySelector('.setup-close');
+const setupUserName = document.querySelector('.setup-user-name');
 
 const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
@@ -49,7 +50,45 @@ const renderWizard = (wizard) => {
   return wizardElement;
 };
 
-showUserDialog();
+const onPopupEscPress = (evt) => {
+  if (evt.key === 'Escape' && document.activeElement !== setupUserName) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+const openPopup = () => {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+const closePopup = () => {
+  userDialog.classList.add('hidden');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    closePopup();
+  }
+});
+
 
 setupSimilarList.appendChild(createWizardsFragment());
 
