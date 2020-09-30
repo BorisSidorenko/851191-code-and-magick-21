@@ -1,6 +1,8 @@
 'use strict';
 
 const WIZARD_COUNT = 4;
+const NAME_LENGTH_MIN = 2;
+const NAME_LENGTH_MAX = 25;
 
 const options = {
   firstNames: ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'],
@@ -14,7 +16,7 @@ const setupSimilarList = document.querySelector('.setup-similar-list');
 const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 const setupOpen = document.querySelector('.setup-open');
 const setupClose = document.querySelector('.setup-close');
-const setupUserName = document.querySelector('.setup-user-name');
+const userNameInput = document.querySelector('.setup-user-name');
 
 const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
@@ -51,11 +53,15 @@ const renderWizard = (wizard) => {
 };
 
 const onPopupEscPress = (evt) => {
-  if (evt.key === 'Escape' && document.activeElement !== setupUserName) {
+  if (evt.key === 'Escape' && document.activeElement !== userNameInput) {
     evt.preventDefault();
     closePopup();
   }
 };
+
+setupSimilarList.appendChild(createWizardsFragment());
+
+showCharacters();
 
 const openPopup = () => {
   userDialog.classList.remove('hidden');
@@ -69,27 +75,39 @@ const closePopup = () => {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-setupOpen.addEventListener('click', function () {
+setupOpen.addEventListener('click', () => {
   openPopup();
 });
 
-setupOpen.addEventListener('keydown', function (evt) {
+setupOpen.addEventListener('keydown', (evt) => {
   if (evt.key === 'Enter') {
     openPopup();
   }
 });
 
-setupClose.addEventListener('click', function () {
+setupClose.addEventListener('click', () => {
   closePopup();
 });
 
-setupClose.addEventListener('keydown', function (evt) {
+setupClose.addEventListener('keydown', (evt) => {
   if (evt.key === 'Enter') {
     closePopup();
   }
 });
 
+const validateUserName = () => {
+  const nameLength = userNameInput.value.length;
+  if (nameLength < NAME_LENGTH_MIN) {
+    userNameInput.setCustomValidity(`Ещё ${NAME_LENGTH_MIN - nameLength} симв.`);
+  } else if (nameLength > NAME_LENGTH_MAX) {
+    userNameInput.setCustomValidity(`Удалите лишние ${nameLength - NAME_LENGTH_MAX} симв.`);
+  } else {
+    userNameInput.setCustomValidity('');
+  }
 
-setupSimilarList.appendChild(createWizardsFragment());
+  userNameInput.reportValidity();
+};
 
-showCharacters();
+userNameInput.addEventListener('input', () => {
+  validateUserName();
+});
