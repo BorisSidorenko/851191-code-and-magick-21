@@ -8,7 +8,8 @@ const options = {
   firstNames: ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'],
   lastNames: ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'],
   coatColors: ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'],
-  eyesColors: ['black', 'red', 'blue', 'yellow', 'green']
+  eyesColors: ['black', 'red', 'blue', 'yellow', 'green'],
+  fireballColors: ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848']
 };
 
 const userDialog = document.querySelector('.setup');
@@ -17,15 +18,20 @@ const similarWizardTemplate = document.querySelector('#similar-wizard-template')
 const setupOpen = document.querySelector('.setup-open');
 const setupClose = document.querySelector('.setup-close');
 const userNameInput = document.querySelector('.setup-user-name');
+const wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
+const wizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
+const wizardFireball = document.querySelector('.setup-fireball-wrap');
+const wizardForm = document.querySelector('.setup-wizard-form');
+
 
 const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
-const getRandomArrValue = (arrLength) => Math.floor(Math.random() * arrLength);
+const getRandomNumberMaxToMin = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const getWizard = () => ({
-  name: options.firstNames[getRandomArrValue(options.firstNames.length)] + ' ' + options.lastNames[getRandomArrValue(options.lastNames.length)],
-  coatColor: options.coatColors[getRandomArrValue(options.coatColors.length)],
-  eyesColor: options.eyesColors[getRandomArrValue(options.eyesColors.length)]
+  name: options.firstNames[getRandomNumberMaxToMin(options.firstNames.length - 1)] + ' ' + options.lastNames[getRandomNumberMaxToMin(options.lastNames.length - 1)],
+  coatColor: options.coatColors[getRandomNumberMaxToMin(options.coatColors.length - 1)],
+  eyesColor: options.eyesColors[getRandomNumberMaxToMin(options.eyesColors.length -1)]
 });
 
 const getWizards = (wizardsCount) => new Array(wizardsCount).fill(undefined).map(getWizard);
@@ -110,4 +116,31 @@ const validateUserName = () => {
 
 userNameInput.addEventListener('input', () => {
   validateUserName();
+});
+
+const changeCoatColor = () => {
+  wizardCoat.style.fill = options.coatColors[getRandomNumberMaxToMin(options.coatColors.length - 1)];
+  document.querySelector('input[name="coat-color"]').value = wizardCoat.style.fill;
+}
+
+wizardCoat.addEventListener('click', () => {
+  changeCoatColor();
+});
+
+const changeEyesColor = () => {
+  wizardEyes.style.fill = options.eyesColors[getRandomNumberMaxToMin(options.eyesColors.length - 1)];
+  document.querySelector('input[name="eyes-color"]').value = wizardEyes.style.fill;
+}
+
+wizardEyes.addEventListener('click', () => {
+  changeEyesColor();
+});
+
+const changeFireballColor = () => {
+  wizardFireball.style.backgroundColor = options.fireballColors[getRandomNumberMaxToMin(options.fireballColors.length - 1)];
+  document.querySelector('input[name="fireball-color"]').value = wizardFireball.style.backgroundColor;
+}
+
+wizardFireball.addEventListener('click', () => {
+  changeFireballColor();
 });
