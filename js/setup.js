@@ -21,7 +21,6 @@ const userNameInput = document.querySelector('.setup-user-name');
 const wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
 const wizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
 const wizardFireball = document.querySelector('.setup-fireball-wrap');
-const wizardForm = document.querySelector('.setup-wizard-form');
 
 
 const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
@@ -31,7 +30,7 @@ const getRandomNumberMaxToMin = (max, min = 0) => Math.floor(Math.random() * (ma
 const getWizard = () => ({
   name: options.firstNames[getRandomNumberMaxToMin(options.firstNames.length - 1)] + ' ' + options.lastNames[getRandomNumberMaxToMin(options.lastNames.length - 1)],
   coatColor: options.coatColors[getRandomNumberMaxToMin(options.coatColors.length - 1)],
-  eyesColor: options.eyesColors[getRandomNumberMaxToMin(options.eyesColors.length -1)]
+  eyesColor: options.eyesColors[getRandomNumberMaxToMin(options.eyesColors.length - 1)]
 });
 
 const getWizards = (wizardsCount) => new Array(wizardsCount).fill(undefined).map(getWizard);
@@ -121,7 +120,7 @@ userNameInput.addEventListener('input', () => {
 const changeCoatColor = () => {
   wizardCoat.style.fill = options.coatColors[getRandomNumberMaxToMin(options.coatColors.length - 1)];
   document.querySelector('input[name="coat-color"]').value = wizardCoat.style.fill;
-}
+};
 
 wizardCoat.addEventListener('click', () => {
   changeCoatColor();
@@ -130,7 +129,7 @@ wizardCoat.addEventListener('click', () => {
 const changeEyesColor = () => {
   wizardEyes.style.fill = options.eyesColors[getRandomNumberMaxToMin(options.eyesColors.length - 1)];
   document.querySelector('input[name="eyes-color"]').value = wizardEyes.style.fill;
-}
+};
 
 wizardEyes.addEventListener('click', () => {
   changeEyesColor();
@@ -139,7 +138,7 @@ wizardEyes.addEventListener('click', () => {
 const changeFireballColor = () => {
   wizardFireball.style.backgroundColor = options.fireballColors[getRandomNumberMaxToMin(options.fireballColors.length - 1)];
   document.querySelector('input[name="fireball-color"]').value = wizardFireball.style.backgroundColor;
-}
+};
 
 wizardFireball.addEventListener('click', () => {
   changeFireballColor();
