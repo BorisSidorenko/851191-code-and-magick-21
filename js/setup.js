@@ -136,8 +136,9 @@ wizardEyes.addEventListener('click', () => {
 });
 
 const changeFireballColor = () => {
-  wizardFireball.style.backgroundColor = options.fireballColors[getRandomNumberMaxToMin(options.fireballColors.length - 1)];
-  document.querySelector('input[name="fireball-color"]').value = wizardFireball.style.backgroundColor;
+  const fireballColor = options.fireballColors[getRandomNumberMaxToMin(options.fireballColors.length - 1)];
+  wizardFireball.style.backgroundColor = fireballColor;
+  document.querySelector('input[name="fireball-color"]').value = fireballColor;
 };
 
 wizardFireball.addEventListener('click', () => {
