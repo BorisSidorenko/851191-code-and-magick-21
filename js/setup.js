@@ -15,11 +15,6 @@ const KeyCode = {
   ENTER_CODE: 'Enter'
 };
 
-const UserNameMessage = {
-  LENGTH_TOO_SHORT: `Ещё X симв.`,
-  LENGTH_TOO_LONG: `Удалите лишние X симв.`
-};
-
 const userDialog = document.querySelector('.setup');
 const setupSimilarList = document.querySelector('.setup-similar-list');
 const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
@@ -115,12 +110,16 @@ setupClose.addEventListener('click', onSetupCloseClick);
 
 setupClose.addEventListener('keydown', onSetupCloseEnterPress);
 
+const getUserNameTooShortMessage = (nameLength) => `Ещё ${NAME_LENGTH_MIN - nameLength} симв.`;
+
+const getUserNameTooLongMessage = (nameLength) => `Удалите лишние ${nameLength - NAME_LENGTH_MAX} симв.`;
+
 const onUserNameInput = () => {
   const nameLength = userNameInput.value.length;
   if (nameLength < NAME_LENGTH_MIN) {
-    userNameInput.setCustomValidity(UserNameMessage.LENGTH_TOO_SHORT.replace('X', `${NAME_LENGTH_MIN - nameLength}`));
+    userNameInput.setCustomValidity(getUserNameTooShortMessage(nameLength));
   } else if (nameLength > NAME_LENGTH_MAX) {
-    userNameInput.setCustomValidity(UserNameMessage.LENGTH_TOO_LONG.replace('X', `${nameLength - NAME_LENGTH_MAX}`));
+    userNameInput.setCustomValidity(getUserNameTooLongMessage(nameLength));
   } else {
     userNameInput.setCustomValidity('');
   }
