@@ -1,6 +1,7 @@
 'use strict';
 
 (() => {
+  const form = document.querySelector('.setup-wizard-form');
   const userDialog = document.querySelector('.setup');
   const setupOpen = document.querySelector('.setup-open');
   const setupClose = userDialog.querySelector('.setup-close');
@@ -50,4 +51,25 @@
   setupClose.addEventListener('click', onSetupCloseClick);
 
   setupClose.addEventListener('keydown', onSetupCloseEnterPress);
+
+  const successHandler = () => {
+    userDialog.classList.add('hidden');
+  };
+
+  const errorHandler = (errorMessage) => {
+    var element = document.createElement('div');
+    element.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    element.style.position = 'absolute';
+    element.style.left = 0;
+    element.style.right = 0;
+    element.style.fontSize = '30px';
+
+    element.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', element);
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), successHandler, errorHandler);
+  });
 })();
