@@ -64,11 +64,14 @@
 
   const errorHandler = (errorMessage) => {
     var element = document.createElement('div');
-    element.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+
     element.style.position = 'absolute';
     element.style.left = 0;
     element.style.right = 0;
-    element.style.fontSize = '30px';
+    element.style.zIndex = 1;
+    element.style.backgroundColor = 'black';
+    element.style.textAlign = 'center';
+    element.style.fontSize = '15px';
 
     element.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', element);
