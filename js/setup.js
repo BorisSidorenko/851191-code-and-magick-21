@@ -2,8 +2,6 @@
 
 (() => {
   const WIZARD_COUNT = 4;
-  const FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  const LAST_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 
   const userDialog = document.querySelector('.setup');
   const setupSimilarList = document.querySelector('.setup-similar-list');
@@ -18,37 +16,17 @@
 
   const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
 
-  const getRandomNumberMaxToMin = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min);
-
-  const getWizard = () => ({
-    name: FIRST_NAMES[getRandomNumberMaxToMin(FIRST_NAMES.length - 1)] + ' ' + LAST_NAMES[getRandomNumberMaxToMin(LAST_NAMES.length - 1)],
-    coatColor: window.colorize.getCoatColor(),
-    eyesColor: window.colorize.getEyesColor()
-  });
-
-  const getWizards = (wizardsCount) => new Array(wizardsCount).fill(undefined).map(getWizard);
-
-  const createWizardsFragment = () => {
-    const fragment = document.createDocumentFragment();
-
-    getWizards(WIZARD_COUNT).forEach(addWizardToFragment(fragment));
-
-    return fragment;
-  };
-
   const addWizardToFragment = (fragment) => (wizard) => fragment.appendChild(renderWizard(wizard));
 
-  const renderWizard = (wizard) => {
+  const renderWizard = ({name, colorCoat, colorEyes}) => {
     const wizardElement = similarWizardTemplate.cloneNode(true);
 
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.setup-similar-label').textContent = name;
+    wizardElement.querySelector('.wizard-coat').style.fill = colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = colorEyes;
 
     return wizardElement;
   };
-
-  setupSimilarList.appendChild(createWizardsFragment());
 
   showCharacters();
 
@@ -77,4 +55,27 @@
   };
 
   wizardFireball.addEventListener('click', onWizardFireballClick);
+
+  const successHandler = (wizards) => {
+    const fragment = document.createDocumentFragment();
+    wizards.slice(0, WIZARD_COUNT).forEach(addWizardToFragment(fragment));
+    setupSimilarList.appendChild(fragment);
+  };
+
+  const errorHandler = (errorMessage) => {
+    var element = document.createElement('div');
+
+    element.style.position = 'absolute';
+    element.style.left = 0;
+    element.style.right = 0;
+    element.style.zIndex = 1;
+    element.style.backgroundColor = 'black';
+    element.style.textAlign = 'center';
+    element.style.fontSize = '15px';
+
+    element.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', element);
+  };
+
+  window.backend.load(successHandler, errorHandler);
 })();
