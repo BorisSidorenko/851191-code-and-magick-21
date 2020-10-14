@@ -50,15 +50,15 @@
     }));
   };
 
-  window.wizard.coatChangeHandler((color) => {
+  window.wizard.coatChangeHandler(window.debounce((color) => {
     coatColor = color;
     updateWizards();
-  });
+  }));
 
-  window.wizard.eyesChangeHandler((color) => {
+  window.wizard.eyesChangeHandler(window.debounce((color) => {
     eyesColor = color;
     updateWizards();
-  });
+  }));
 
   const successHandler = (data) => {
     wizards = data;
