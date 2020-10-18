@@ -20,34 +20,26 @@
     let rank = 0;
 
     if (wizard.colorCoat === coatColor) {
-      rank = rank + 2;
+      rank += 2;
     }
 
     if (wizard.colorEyes === eyesColor) {
-      rank = rank + 1;
+      rank += 1;
     }
 
     return rank;
   };
 
-  const compareNames = (left, right) => {
-    if (left > right) {
-      return 1;
-    } else if (left < right) {
-      return -1;
-    } else {
-      return 0;
+  const compareWizard = ((left, right) => {
+    let diff = getWizardRank(right) - getWizardRank(left);
+    if (diff === 0) {
+      diff = left.name - right.name;
     }
-  };
+    return diff;
+  });
 
   const updateWizards = () => {
-    window.render(wizards.sort((left, right) => {
-      let diff = getWizardRank(right) - getWizardRank(left);
-      if (diff === 0) {
-        diff = compareNames(left.name, right.name);
-      }
-      return diff;
-    }));
+    window.render(wizards.slice().sort(compareWizard));
   };
 
   window.wizard.coatChangeHandler(window.debounce((color) => {
