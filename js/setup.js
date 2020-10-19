@@ -1,32 +1,14 @@
 'use strict';
 
 (() => {
-  const WIZARD_COUNT = 4;
-
   const userDialog = document.querySelector('.setup');
-  const setupSimilarList = document.querySelector('.setup-similar-list');
-  const similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   const userNameInput = document.querySelector('.setup-user-name');
-  const wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
-  const wizardCoatHidden = document.querySelector('input[name="coat-color"]');
-  const wizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
-  const wizardEyesHidden = document.querySelector('input[name="eyes-color"]');
-  const wizardFireball = document.querySelector('.setup-fireball-wrap');
-  const wizardFireballHidden = document.querySelector('input[name="fireball-color"]');
+
+  let coatColor = 'rgb(101, 137, 164)';
+  let eyesColor = 'black';
+  let wizards = [];
 
   const showCharacters = () => userDialog.querySelector('.setup-similar').classList.remove('hidden');
-
-  const addWizardToFragment = (fragment) => (wizard) => fragment.appendChild(renderWizard(wizard));
-
-  const renderWizard = ({name, colorCoat, colorEyes}) => {
-    const wizardElement = similarWizardTemplate.cloneNode(true);
-
-    wizardElement.querySelector('.setup-similar-label').textContent = name;
-    wizardElement.querySelector('.wizard-coat').style.fill = colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = colorEyes;
-
-    return wizardElement;
-  };
 
   showCharacters();
 
@@ -34,47 +16,49 @@
 
   userNameInput.addEventListener('input', onUserNameInput);
 
-  const onWizardCoatClick = () => {
-    wizardCoat.style.fill = window.colorize.getCoatColor();
-    wizardCoatHidden.value = wizardCoat.style.fill;
+  const getWizardRank = (wizard) => {
+    let rank = 0;
+
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+
+    return rank;
   };
 
-  wizardCoat.addEventListener('click', onWizardCoatClick);
+  const compareWizard = ((left, right) => {
+    let diff = getWizardRank(right) - getWizardRank(left);
+    if (diff === 0) {
+      diff = left.name - right.name;
+    }
+    return diff;
+  });
 
-  const onWizardEyesClick = () => {
-    wizardEyes.style.fill = window.colorize.getEyesColor();
-    wizardEyesHidden.value = wizardEyes.style.fill;
+  const updateWizards = () => {
+    window.render(wizards.slice().sort(compareWizard));
   };
 
-  wizardEyes.addEventListener('click', onWizardEyesClick);
+  window.wizard.coatChangeHandler(window.debounce((color) => {
+    coatColor = color;
+    updateWizards();
+  }));
 
-  const onWizardFireballClick = () => {
-    const fireballColor = window.colorize.getFireballColor();
-    wizardFireball.style.backgroundColor = fireballColor;
-    wizardFireballHidden.value = fireballColor;
-  };
+  window.wizard.eyesChangeHandler(window.debounce((color) => {
+    eyesColor = color;
+    updateWizards();
+  }));
 
-  wizardFireball.addEventListener('click', onWizardFireballClick);
-
-  const successHandler = (wizards) => {
-    const fragment = document.createDocumentFragment();
-    wizards.slice(0, WIZARD_COUNT).forEach(addWizardToFragment(fragment));
-    setupSimilarList.appendChild(fragment);
+  const successHandler = (data) => {
+    wizards = data;
+    updateWizards();
   };
 
   const errorHandler = (errorMessage) => {
-    var element = document.createElement('div');
-
-    element.style.position = 'absolute';
-    element.style.left = 0;
-    element.style.right = 0;
-    element.style.zIndex = 1;
-    element.style.backgroundColor = 'black';
-    element.style.textAlign = 'center';
-    element.style.fontSize = '15px';
-
-    element.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', element);
+    window.util.createErrorMessage(errorMessage);
   };
 
   window.backend.load(successHandler, errorHandler);
