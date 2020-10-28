@@ -6,6 +6,7 @@ module.exports = {
     "./js/util.js",
     "./js/backend.js",
     "./js/dialog.js",
+    "./js/avatar.js",
     "./js/move.js",
     "./js/colorize.js",
     "./js/render.js",
